@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volt & Blade — Electric Lawn Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine: #16302A;
+    --pine-soft: #1F4438;
+    --moss: #587B4F;
+    --mist: #E9EFE2;
+    --cream: #F6F4EC;
+    --charge: #C3F73A;
+    --charge-dim: #9FCB2A;
+    --soil: #3A2A1D;
+    --line: rgba(22,48,42,0.14);
+    --stripe-a: #EDF1E4;
+    --stripe-b: #E2E9D6;
+    --radius: 14px;
+    --disp: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--body);
+    background:var(--cream);
+    color:var(--pine);
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;}
+  img,svg{display:block; max-width:100%;}
+
+  :focus-visible{
+    outline: 3px solid var(--charge);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+
+  /* ---------- stripe motif (recurring signature device) ---------- */
+  .stripes{
+    background-image: repeating-linear-gradient(
+      100deg,
+      var(--stripe-a) 0px, var(--stripe-a) 64px,
+      var(--stripe-b) 64px, var(--stripe-b) 128px
+    );
+  }
+  .stripe-rule{
+    height: 10px;
+    background-image: repeating-linear-gradient(
+      100deg,
+      var(--moss) 0px, var(--moss) 22px,
+      var(--pine) 22px, var(--pine) 44px
+    );
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(246,244,236,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 32px; max-width:1180px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--disp); font-weight:700; font-size:1.25rem;
+    letter-spacing:-0.01em;
+  }
+  .brand-mark{
+    width:30px; height:30px; flex-shrink:0;
+  }
+  .navlinks{
+    display:flex; gap:34px; list-style:none;
+    font-size:0.94rem; font-weight:500;
+  }
+  .navlinks a{
+    text-decoration:none; position:relative; padding-bottom:4px;
+  }
+  .navlinks a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:2px;
+    background:var(--pine); transition: width .25s ease;
+  }
+  .navlinks a:hover::after{width:100%;}
+  .nav-cta{
+    background:var(--pine); color:var(--cream); border:none;
+    font-family:var(--body); font-weight:600; font-size:0.9rem;
+    padding:11px 20px; border-radius:100px; cursor:pointer;
+    text-decoration:none; white-space:nowrap;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .nav-cta:hover{background:var(--pine-soft); transform: translateY(-1px);}
+  .menu-btn{display:none; background:none; border:none; cursor:pointer;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 76px 32px 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-inner{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns: 1.1fr 0.9fr; gap:48px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:0.78rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--moss);
+    background: rgba(88,123,79,0.1); border:1px solid rgba(88,123,79,0.25);
+    padding:6px 12px; border-radius:100px; margin-bottom:22px;
+  }
+  .eyebrow .dot{
+    width:7px; height:7px; border-radius:50%; background:var(--charge-dim);
+    box-shadow:0 0 0 3px rgba(195,247,58,0.35);
+  }
+  h1{
+    font-family:var(--disp); font-weight:700;
+    font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+    line-height:1.04; letter-spacing:-0.02em;
+    margin-bottom:20px;
+  }
+  h1 .accent{
+    color:var(--moss);
+    position:relative;
+  }
+  .hero p.lede{
+    font-size:1.12rem; color:#3d5148; max-width:46ch; margin-bottom:32px;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:38px;}
+  .btn{
+    font-family:var(--body); font-weight:600; font-size:0.96rem;
+    padding:14px 26px; border-radius:100px; cursor:pointer;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    border:1.5px solid transparent;
+  }
+  .btn-primary{
+    background:var(--pine); color:var(--cream);
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(22,48,42,0.25);}
+  .btn-ghost{
+    background:transparent; border-color:var(--pine); color:var(--pine);
+  }
+  .btn-ghost:hover{background:var(--pine); color:var(--cream);}
+
+  .spec-row{
+    display:flex; gap:28px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:0.82rem; color:var(--soil);
+  }
+  .spec-row span{display:flex; align-items:center; gap:6px;}
+  .spec-row b{font-family:var(--mono); color:var(--pine); font-weight:600;}
+
+  /* hero visual: mowed stripe card with animated mower */
+  .hero-visual{
+    position:relative; aspect-ratio: 1/1; border-radius: 22px;
+    overflow:hidden; box-shadow: 0 24px 60px rgba(22,48,42,0.22);
+    background: var(--stripe-a);
+  }
+  .hero-visual svg{width:100%; height:100%;}
+
+  .mower-path{
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+    animation: draw 2.6s ease forwards 0.4s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset: 0; } }
+
+  .mower-icon{
+    offset-path: path("M40,540 L40,120 L1160,120 L1160,300 L120,300 L120,480 L1160,480 L1160,660");
+    animation: mow 2.6s ease forwards 0.4s;
+  }
+  @keyframes mow{
+    0%{ offset-distance: 0%; }
+    100%{ offset-distance: 100%; }
+  }
+
+  .charge-badge{
+    position:absolute; bottom:18px; left:18px;
+    background: rgba(22,48,42,0.92); color:var(--cream);
+    border-radius:12px; padding:12px 16px;
+    font-family:var(--mono); font-size:0.78rem;
+    display:flex; align-items:center; gap:10px;
+    backdrop-filter: blur(4px);
+  }
+  .charge-bolt{width:16px; height:16px; fill:var(--charge);}
+
+  /* ---------- marquee strip ---------- */
+  .marquee{
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    overflow:hidden; white-space:nowrap; padding:14px 0;
+    background:var(--pine); color:var(--mist);
+  }
+  .marquee-track{
+    display:inline-block; font-family:var(--mono); font-size:0.82rem;
+    letter-spacing:0.04em;
+    animation: scroll 26s linear infinite;
+  }
+  .marquee-track span{margin:0 28px; opacity:0.9;}
+  .marquee-track span::before{content:"•"; margin-right:28px; color:var(--charge);}
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- section headers ---------- */
+  .section{padding:96px 32px;}
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .kicker{
+    font-family:var(--mono); font-size:0.78rem; text-transform:uppercase;
+    letter-spacing:0.08em; color:var(--moss); margin-bottom:14px; display:block;
+  }
+  h2{
+    font-family:var(--disp); font-weight:700; letter-spacing:-0.015em;
+    font-size:clamp(1.9rem, 3.2vw, 2.6rem); line-height:1.1;
+  }
+  .section-head p{color:#4a5c52; margin-top:14px; font-size:1.05rem;}
+
+  /* ---------- comparison (signature data section) ---------- */
+  .compare{
+    background:var(--pine); color:var(--mist);
+  }
+  .compare .kicker{color:var(--charge);}
+  .compare .section-head p{color:#b9c9bf;}
+  .compare h2{color:var(--cream);}
+
+  .compare-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;
+  }
+  .compare-card{
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding:28px 26px;
+  }
+  .compare-card h3{
+    font-family:var(--body); font-weight:600; font-size:1rem;
+    margin-bottom:22px; color:var(--mist);
+  }
+  .bar-row{margin-bottom:18px;}
+  .bar-label{
+    display:flex; justify-content:space-between; font-family:var(--mono);
+    font-size:0.78rem; margin-bottom:6px; color:#c4d2c9;
+  }
+  .bar-label b{color:var(--charge); font-weight:600;}
+  .bar-track{
+    height:8px; background:rgba(255,255,255,0.08); border-radius:6px; overflow:hidden;
+  }
+  .bar-fill{
+    height:100%; border-radius:6px; background: var(--moss);
+    width:0%; transition: width 1.4s cubic-bezier(.2,.8,.2,1);
+  }
+  .bar-fill.electric{background: var(--charge);}
+  .compare-card.electric{
+    border-color: rgba(195,247,58,0.4);
+    background: rgba(195,247,58,0.06);
+  }
+  .compare-card.electric h3{color:var(--charge);}
+
+  /* ---------- services ---------- */
+  .services-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:22px;
+  }
+  .service-card{
+    background:var(--mist); border-radius:var(--radius);
+    padding:30px 26px; border:1px solid var(--line);
+    transition: transform .25s ease, box-shadow .25s ease;
+    display:flex; flex-direction:column; height:100%;
+  }
+  .service-card:hover{transform:translateY(-4px); box-shadow:0 16px 32px rgba(22,48,42,0.1);}
+  .service-icon{
+    width:44px; height:44px; border-radius:10px; background:var(--pine);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+  }
+  .service-icon svg{width:22px; height:22px; stroke:var(--charge); fill:none;}
+  .service-card h3{font-family:var(--disp); font-size:1.2rem; margin-bottom:10px;}
+  .service-card p{color:#4a5c52; font-size:0.95rem; margin-bottom:20px; flex-grow:1;}
+  .service-specs{
+    font-family:var(--mono); font-size:0.78rem; color:var(--soil);
+    border-top:1px dashed var(--line); padding-top:14px;
+    display:flex; justify-content:space-between;
+  }
+
+  /* ---------- process ---------- */
+  .process{background:var(--cream);}
+  .process-list{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap:0;
+    counter-reset: step;
+    border-top:1px solid var(--line);
+  }
+  .process-step{
+    padding:28px 22px 0 0; position:relative;
+    border-right:1px solid var(--line);
+  }
+  .process-step:last-child{border-right:none;}
+  .process-step .num{
+    font-family:var(--mono); font-size:0.85rem; color:var(--moss);
+    display:block; margin-bottom:14px;
+  }
+  .process-step h3{font-family:var(--disp); font-size:1.08rem; margin-bottom:8px;}
+  .process-step p{font-size:0.9rem; color:#4a5c52;}
+
+  /* ---------- testimonials ---------- */
+  .testimonials{background:var(--stripe-a);}
+  .test-grid{
+    display:grid; grid-template-columns: repeat(3,1fr); gap:22px;
+  }
+  .test-card{
+    background:var(--cream); border-radius:var(--radius); padding:28px 24px;
+    border:1px solid var(--line);
+  }
+  .test-card p{font-size:0.98rem; color:var(--pine); margin-bottom:18px;}
+  .test-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:var(--mono); font-size:0.78rem; color:var(--moss);
+  }
+  .stars{color:var(--charge-dim); letter-spacing:2px;}
+
+  /* ---------- pricing / coverage ---------- */
+  .coverage{
+    display:grid; grid-template-columns: 1fr 1fr; gap:48px; align-items:center;
+  }
+  .coverage-list{list-style:none;}
+  .coverage-list li{
+    display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);
+    font-size:0.98rem;
+  }
+  .coverage-list li:last-child{border-bottom:none;}
+  .check{
+    width:20px; height:20px; flex-shrink:0; border-radius:50%;
+    background:var(--pine); display:flex; align-items:center; justify-content:center;
+    margin-top:2px;
+  }
+  .check svg{width:11px; height:11px; stroke:var(--charge); fill:none;}
+
+  .quote-box{
+    background:var(--pine); border-radius:20px; padding:38px;
+    color:var(--cream);
+  }
+  .quote-box h3{font-family:var(--disp); font-size:1.4rem; margin-bottom:6px;}
+  .quote-box p{color:#b9c9bf; font-size:0.92rem; margin-bottom:26px;}
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block; font-family:var(--mono); font-size:0.72rem;
+    text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; color:#b9c9bf;
+  }
+  .field input, .field select{
+    width:100%; padding:12px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.06); color:var(--cream); font-family:var(--body); font-size:0.94rem;
+  }
+  .field input::placeholder{color:#7f9689;}
+  .field input:focus, .field select:focus{outline:2px solid var(--charge); border-color:transparent;}
+  .quote-submit{
+    width:100%; background:var(--charge); color:var(--pine); border:none;
+    font-weight:700; font-family:var(--body); padding:14px; border-radius:100px;
+    cursor:pointer; font-size:0.98rem; margin-top:6px;
+    transition: transform .2s ease;
+  }
+  .quote-submit:hover{transform:translateY(-2px);}
+  .form-note{font-family:var(--mono); font-size:0.72rem; color:#7f9689; margin-top:12px; text-align:center;}
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--soil); color:#d8cfc4; padding:56px 32px 28px;
+  }
+  .footer-grid{
+    display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap:40px;
+    padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .footer-brand{font-family:var(--disp); font-weight:700; font-size:1.2rem; color:var(--cream); margin-bottom:10px;}
+  .footer-grid p{font-size:0.88rem; color:#b3a798; max-width:32ch;}
+  .footer-grid h4{
+    font-family:var(--mono); font-size:0.74rem; text-transform:uppercase;
+    letter-spacing:0.06em; color:#8f8375; margin-bottom:14px;
+  }
+  .footer-grid ul{list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .footer-grid a{text-decoration:none; font-size:0.9rem; color:#d8cfc4;}
+  .footer-grid a:hover{color:var(--charge);}
+  .footer-bottom{
+    display:flex; justify-content:space-between; padding-top:22px;
+    font-family:var(--mono); font-size:0.76rem; color:#8f8375; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px){
+    .navlinks{display:none;}
+    .menu-btn{display:block;}
+    .hero-inner{grid-template-columns:1fr; gap:36px;}
+    .compare-grid{grid-template-columns:1fr;}
+    .services-grid{grid-template-columns:1fr;}
+    .process-list{grid-template-columns:1fr 1fr;}
+    .process-step{border-right:none; border-bottom:1px solid var(--line); padding-bottom:24px; margin-bottom:8px;}
+    .test-grid{grid-template-columns:1fr;}
+    .coverage{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width: 520px){
+    .process-list{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .section{padding:64px 20px;}
+    .hero{padding:56px 20px 30px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="15" stroke="#16302A" stroke-width="1.5"/>
+        <path d="M17 6 L9 18 H15 L14 26 L23 13 H17 L18 6 Z" fill="#16302A"/>
+      </svg>
+      Volt&nbsp;&amp;&nbsp;Blade
+    </div>
+    <nav>
+      <ul class="navlinks">
+        <li><a href="#compare">Why electric</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#process">How it works</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+    </nav>
+    <a href="#quote" class="nav-cta">Get a quote</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow"><span class="dot"></span> 100% battery-powered fleet</span>
+      <h1>Quiet power.<br>Cleaner <span class="accent">cut.</span></h1>
+      <p class="lede">Volt & Blade mows your lawn with zero tailpipe emissions, a third of the noise, and stripes sharp enough for a scorecard — all on electrons, not gasoline.</p>
+      <div class="hero-ctas">
+        <a href="#quote" class="btn btn-primary">Get your free quote</a>
+        <a href="#compare" class="btn btn-ghost">See the numbers</a>
+      </div>
+      <div class="spec-row">
+        <span>⚡ <b>0g</b> CO₂ per mow</span>
+        <span>🔉 <b>&lt;65dB</b> at the curb</span>
+        <span>📍 <b>Topeka</b> &amp; surrounding area</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="stripeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#E7EEDC"/>
+            <stop offset="1" stop-color="#DCE6CC"/>
+          </linearGradient>
+        </defs>
+        <rect width="1200" height="700" fill="url(#stripeGrad)"/>
+        <g>
+          <rect y="0" width="1200" height="120" fill="#E2E9D6"/>
+          <rect y="120" width="1200" height="180" fill="#EDF1E4"/>
+          <rect y="300" width="1200" height="180" fill="#E2E9D6"/>
+          <rect y="480" width="1200" height="220" fill="#EDF1E4"/>
+        </g>
+        <path class="mower-path" d="M40,540 L40,120 L1160,120 L1160,300 L120,300 L120,480 L1160,480 L1160,660"
+          fill="none" stroke="#587B4F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+        <g class="mower-icon">
+          <circle r="20" fill="#16302A"/>
+          <rect x="-13" y="-8" width="26" height="16" rx="4" fill="#C3F73A"/>
+        </g>
+      </svg>
+      <div class="charge-badge">
+        <svg class="charge-bolt" viewBox="0 0 24 24"><path d="M13 2 L4 14 H11 L10 22 L20 9 H13 L14 2 Z"/></svg>
+        One charge = up to 1.5 acres
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>ZERO EMISSIONS</span><span>UNDER 65 DECIBELS</span><span>LOCALLY OWNED</span><span>WEEKLY &amp; BI-WEEKLY ROUTES</span><span>NO GAS, NO OIL, NO EXHAUST</span>
+    <span>ZERO EMISSIONS</span><span>UNDER 65 DECIBELS</span><span>LOCALLY OWNED</span><span>WEEKLY &amp; BI-WEEKLY ROUTES</span><span>NO GAS, NO OIL, NO EXHAUST</span>
+  </div>
+</div>
+
+<section class="section compare" id="compare">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Gas vs. electric</span>
+      <h2>Same lawn, fewer trade-offs.</h2>
+      <p>Electric mowers used to mean weaker cuts and short runtimes. Ours don't. Here's how a Volt & Blade visit compares to a typical gas crew.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card reveal">
+        <h3>Noise at the property line</h3>
+        <div class="bar-row">
+          <div class="bar-label"><span>Gas mower</span><b>90 dB</b></div>
+          <div class="bar-track"><div class="bar-fill" data-width="100%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Volt & Blade</span><b>63 dB</b></div>
+          <div class="bar-track"><div class="bar-fill electric" data-width="52%"></div></div>
+        </div>
+      </div>
+
+      <div class="compare-card reveal">
+        <h3>CO₂ per hour of mowing</h3>
+        <div class="bar-row">
+          <div class="bar-label"><span>Gas mower</span><b>~2.3 lb</b></div>
+          <div class="bar-track"><div class="bar-fill" data-width="100%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Volt & Blade</span><b>0 lb tailpipe</b></div>
+          <div class="bar-track"><div class="bar-fill electric" data-width="6%"></div></div>
+        </div>
+      </div>
+
+      <div class="compare-card electric reveal">
+        <h3>What you actually notice</h3>
+        <div class="bar-row">
+          <div class="bar-label"><span>Can run before 9am</span><b>Yes</b></div>
+          <div class="bar-track"><div class="bar-fill electric" data-width="100%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Gas smell on the lawn</span><b>None</b></div>
+          <div class="bar-track"><div class="bar-fill electric" data-width="100%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Services</span>
+      <h2>Mowing, edging, and cleanup — all electric.</h2>
+      <p>Pick a one-time visit or a standing route. Every job runs on batteries we charge off our own solar array.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></div>
+        <h3>Routine mowing</h3>
+        <p>Weekly or bi-weekly visits with clean stripe patterns, mulched clippings, and a trimmed edge every time.</p>
+        <div class="service-specs"><span>UP TO 1 ACRE</span><span>FROM $45</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M4 20 L20 4 M9 4 H4 V9 M15 20 H20 V15"/></svg></div>
+        <h3>Edging & trimming</h3>
+        <p>Crisp lines along walkways, beds, and fences with a cordless string trimmer — no fuel splashes on your beds.</p>
+        <div class="service-specs"><span>ADD-ON</span><span>FROM $15</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M4 4 L20 20 M20 4 L4 20" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Fall leaf cleanup</h3>
+        <p>Battery blowers and mulching passes to clear leaves without the two-stroke roar up and down the street.</p>
+        <div class="service-specs"><span>SEASONAL</span><span>FROM $60</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/></svg></div>
+        <h3>New lawn setup</h3>
+        <p>First-cut leveling and a mowing plan tailored to your grass type, sun exposure, and soil.</p>
+        <div class="service-specs"><span>ONE-TIME</span><span>QUOTE</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 3 L12 12 L18 15" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Standing routes</h3>
+        <p>Set a day of the week, and we show up like clockwork — you'll get a text the morning we're on the way.</p>
+        <div class="service-specs"><span>SUBSCRIPTION</span><span>FROM $40/VISIT</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M5 12 L10 17 L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>HOA & multi-lot</h3>
+        <p>Coordinated crews for shared green spaces, with a single quiet fleet instead of a lineup of gas rigs.</p>
+        <div class="service-specs"><span>COMMERCIAL</span><span>QUOTE</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section process stripes" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">How it works</span>
+      <h2>From first mow to standing route.</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-step reveal">
+        <span class="num">01</span>
+        <h3>Get a quote</h3>
+        <p>Tell us your address and lawn size below — most quotes come back same day.</p>
+      </div>
+      <div class="process-step reveal">
+        <span class="num">02</span>
+        <h3>Pick a schedule</h3>
+        <p>Weekly, bi-weekly, or a one-off visit. You choose the cadence, we hold the slot.</p>
+      </div>
+      <div class="process-step reveal">
+        <span class="num">03</span>
+        <h3>We mow, you don't hear us</h3>
+        <p>Our crew arrives on schedule and runs the full visit on charged batteries.</p>
+      </div>
+      <div class="process-step reveal">
+        <span class="num">04</span>
+        <h3>Pay online</h3>
+        <p>An invoice lands after each visit — no cash, no checks, no chasing anyone down.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section testimonials" id="reviews">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Reviews</span>
+      <h2>What the neighborhood says.</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <p>"I can finally have my mower guy come at 8am on a Saturday without waking the whole street. Genuinely didn't think that was possible."</p>
+        <div class="test-foot"><span>Maren D.</span><span class="stars">★★★★★</span></div>
+      </div>
+      <div class="test-card reveal">
+        <p>"No more gas smell drifting into the kitchen window. The stripes are sharper than what our old company left, too."</p>
+        <div class="test-foot"><span>Josh T.</span><span class="stars">★★★★★</span></div>
+      </div>
+      <div class="test-card reveal">
+        <p>"Switched our HOA's common areas over and the noise complaints basically stopped overnight."</p>
+        <div class="test-foot"><span>Priya R., HOA board</span><span class="stars">★★★★★</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="quote">
+  <div class="wrap">
+    <div class="coverage">
+      <div class="reveal">
+        <span class="kicker">Service area</span>
+        <h2 style="margin-bottom:26px;">Currently mowing across Topeka.</h2>
+        <ul class="coverage-list">
+          <li><span class="check"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-9"/></svg></span> Topeka, Auburn, Tecumseh & Rossville</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-9"/></svg></span> Residential lots up to 2 acres</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-9"/></svg></span> HOA common areas & small commercial lots</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-9"/></svg></span> Solar-charged equipment, charged overnight</li>
+        </ul>
+      </div>
+
+      <form class="quote-box reveal" id="quoteForm">
+        <h3>Get a free quote</h3>
+        <p>Tell us about your lawn — we'll reply with pricing within one business day.</p>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Jane Smith" required>
+        </div>
+        <div class="field">
+          <label for="address">Address</label>
+          <input id="address" type="text" placeholder="123 Prairie Ave, Topeka, KS" required>
+        </div>
+        <div class="field">
+          <label for="size">Approximate lawn size</label>
+          <select id="size">
+            <option>Under 1/4 acre</option>
+            <option selected>1/4 – 1/2 acre</option>
+            <option>1/2 – 1 acre</option>
+            <option>1+ acre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="freq">Frequency</label>
+          <select id="freq">
+            <option>Weekly</option>
+            <option selected>Bi-weekly</option>
+            <option>One-time visit</option>
+          </select>
+        </div>
+        <button type="submit" class="quote-submit">Request my quote</button>
+        <p class="form-note">No spam, no obligation — just a number.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Volt &amp; Blade</div>
+      <p>Electric lawn care for people who'd rather hear birds than a two-stroke engine.</p>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#compare">Why electric</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:7855550142">(785) 555-0142</a></li>
+        <li><a href="mailto:hello@voltandblade.com">hello@voltandblade.com</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <ul>
+        <li>Mon–Fri, 8am–6pm</li>
+        <li>Sat, 8am–1pm</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Volt & Blade Lawn Care</span>
+    <span>100% battery-powered fleet</span>
+  </div>
+</footer>
+
+<script>
+  // Mobile-safe reveal-on-scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Animate comparison bars once visible
+  const bars = document.querySelectorAll('.bar-fill');
+  const barIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.style.width = entry.target.dataset.width;
+        barIO.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  bars.forEach(b => barIO.observe(b));
+
+  // Quote form (demo submit)
+  const form = document.getElementById('quoteForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn = form.querySelector('.quote-submit');
+    const original = btn.textContent;
+    btn.textContent = 'Request sent ✓';
+    btn.style.background = '#9FCB2A';
+    form.reset();
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+    }, 2600);
+  });
+</script>
+
+</body>
+</html>
